@@ -1,7 +1,7 @@
 let fileSystem = {
     "readme.txt": "Nothing to see here...",
     ".secret": {
-        "remember.txt": "I created a super secred command called 'hack'.\nNobody is allowed to find out."
+        "howtohack.txt": "I created a super secred command called 'hack'.\nNobody is allowed to find out."
     }
 };
 let firstPrompt = true;
@@ -78,6 +78,10 @@ function files() {
 function commands() {
     return {
         cat: function (value) {
+            if(!value) {
+                this.echo("Wrong number of arguments (given 0, expected 1)");
+                return;
+            }
             let current = currentFolder()
             let fileArray = files();
             if (fileArray.includes(value)) {
@@ -87,6 +91,10 @@ function commands() {
             }
         },
         cd: function (value) {
+            if(!value) {
+                this.echo("Wrong number of arguments (given 0, expected 1)");
+                return;
+            }
             let pathTransferArray = [];
             if (value === "~") {
                 currentWorkingDir = "";
@@ -118,6 +126,10 @@ function commands() {
             this.echo(date.toLocaleString());
         },
         echo: function (value) {
+            if(!value) {
+                this.echo("Wrong number of arguments (given 0, expected 1)");
+                return;
+            }
             this.echo("[[;#ff00ff;]" + value + "]");
         },
         help: function () {
@@ -134,6 +146,7 @@ function commands() {
             this.echo(sorryStatement);
         },
         ls: function (...args) {
+            console.log(args)
             let current = fileSystem;
             currentWorkingDir.split('/').forEach(function (item) {
                 if (item !== "") {
@@ -184,6 +197,7 @@ $(document).ready(() => {
     init();
     $("body").terminal(commands(), {
         prompt: prompt(),
+        checkArity: false,
         greetings: greetings(),
     });
 });
